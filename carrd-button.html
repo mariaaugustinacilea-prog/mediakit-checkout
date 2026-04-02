@@ -1,0 +1,56 @@
+<!-- BUTON CUMPARARE MEDIA KIT - embed in Carrd -->
+<!-- Inlocuieste YOUR_VERCEL_URL cu URL-ul tau de pe Vercel dupa deploy -->
+
+<button onclick="startCheckout()" id="buy-btn">
+  Cumpără Media Kit – 50 RON
+</button>
+
+<style>
+  #buy-btn {
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 16px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  #buy-btn:hover {
+    background: #333;
+  }
+  #buy-btn:disabled {
+    background: #999;
+    cursor: not-allowed;
+  }
+</style>
+
+<script>
+  async function startCheckout() {
+    const btn = document.getElementById('buy-btn');
+    btn.disabled = true;
+    btn.textContent = 'Se încarcă...';
+
+    try {
+      const response = await fetch('https://YOUR_VERCEL_URL/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      const data = await response.json();
+
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert('A apărut o eroare. Te rugăm să încerci din nou.');
+        btn.disabled = false;
+        btn.textContent = 'Cumpără Media Kit – 50 RON';
+      }
+    } catch (error) {
+      alert('A apărut o eroare. Te rugăm să încerci din nou.');
+      btn.disabled = false;
+      btn.textContent = 'Cumpără Media Kit – 50 RON';
+    }
+  }
+</script>
